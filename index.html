@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interaksi Manusia dan Komputer - Sub Bab 2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .navigation {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .nav-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-card:hover::before {
+            left: 100%;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #4facfe;
+        }
+
+        .nav-card h3 {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .nav-card p {
+            color: #666;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .nav-card.active {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .nav-card.active h3,
+        .nav-card.active p {
+            color: white;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .content-section h2 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #4facfe;
+            padding-bottom: 10px;
+        }
+
+        .content-section h3 {
+            color: #4facfe;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+        }
+
+        .content-section p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .content-section ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        .content-section li {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .video-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .video-section h2 {
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .video-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .video-link {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .video-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: translateY(-5px);
+        }
+
+        .video-link h4 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .video-link p {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-button {
+            background: #4facfe;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .back-button:hover {
+            background: #00f2fe;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .navigation {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Interaksi Manusia dan Komputer</h1>
+            <p>Sub Bab 2: Prinsip dan Desain Interface</p>
+        </div>
+
+        <div class="content">
+            <div id="main-navigation" class="navigation">
+                <div class="nav-card" onclick="showContent('materi1')">
+                    <h3>🎯 Prinsip Desain Interface</h3>
+                    <p>Memahami prinsip-prinsip dasar dalam merancang interface yang user-friendly dan efektif</p>
+                </div>
+
+                <div class="nav-card" onclick="showContent('materi2')">
+                    <h3>🖥️ Jenis-jenis Interface</h3>
+                    <p>Mengenal berbagai macam interface komputer dan karakteristiknya</p>
+                </div>
+
+                <div class="nav-card" onclick="showContent('materi3')">
+                    <h3>👤 Faktor Manusia dalam HCI</h3>
+                    <p>Memahami aspek psikologi dan ergonomi dalam interaksi manusia-komputer</p>
+                </div>
+            </div>
+
+            <div id="materi1" class="content-section">
+                <button class="back-button" onclick="showMain()">← Kembali ke Menu Utama</button>
+                <h2>Prinsip Desain Interface</h2>
+                
+                <h3>1. Prinsip Visibilitas</h3>
+                <p>Interface harus memberikan informasi yang jelas tentang status sistem dan tindakan yang tersedia. Pengguna harus dapat melihat dan memahami apa yang sedang terjadi dalam sistem.</p>
+                
+                <h3>2. Prinsip Umpan Balik (Feedback)</h3>
+                <p>Sistem harus memberikan respons yang jelas dan tepat waktu terhadap setiap tindakan pengguna. Feedback membantu pengguna memahami hasil dari tindakan mereka.</p>
+                
+                <h3>3. Prinsip Konsistensi</h3>
+                <p>Elemen interface yang sama harus berperilaku dengan cara yang sama di seluruh aplikasi. Konsistensi membantu pengguna membangun model mental yang stabil.</p>
+                
+                <h3>4. Prinsip Kendali Pengguna</h3>
+                <p>Pengguna harus merasa memiliki kendali atas sistem. Interface harus menyediakan cara untuk membatalkan tindakan, keluar dari situasi yang tidak diinginkan, dan mengatur preferensi.</p>
+                
+                <h3>5. Prinsip Pencegahan Error</h3>
+                <p>Desain yang baik mencegah terjadinya error dengan menghilangkan kondisi yang rawan kesalahan dan memberikan konfirmasi untuk tindakan yang destruktif.</p>
+            </div>
+
+            <div id="materi2" class="content-section">
+                <button class="back-button" onclick="showMain()">← Kembali ke Menu Utama</button>
+                <h2>Jenis-jenis Interface</h2>
+                
+                <h3>1. Command Line Interface (CLI)</h3>
+                <p>Interface berbasis teks di mana pengguna berinteraksi dengan sistem melalui perintah yang diketik. CLI memberikan kontrol yang presisi namun memerlukan pembelajaran yang lebih mendalam.</p>
+                
+                <h3>2. Graphical User Interface (GUI)</h3>
+                <p>Interface yang menggunakan elemen visual seperti ikon, menu, dan window. GUI lebih intuitif untuk pengguna pemula dan memungkinkan interaksi melalui pointing device.</p>
+                
+                <h3>3. Menu-Driven Interface</h3>
+                <p>Interface yang menyajikan pilihan dalam bentuk menu hierarkis. Cocok untuk aplikasi dengan fungsi yang terbatas dan pengguna yang memerlukan guidance.</p>
+                
+                <h3>4. Natural Language Interface</h3>
+                <p>Interface yang memungkinkan pengguna berinteraksi menggunakan bahasa alami. Contohnya adalah chatbot dan voice assistant seperti Siri atau Alexa.</p>
+                
+                <h3>5. Touch Interface</h3>
+                <p>Interface yang didesain untuk perangkat layar sentuh. Menggunakan gesture seperti tap, swipe, pinch, dan long press untuk navigasi.</p>
+            </div>
+
+            <div id="materi3" class="content-section">
+                <button class="back-button" onclick="showMain()">← Kembali ke Menu Utama</button>
+                <h2>Faktor Manusia dalam HCI</h2>
+                
+                <h3>1. Aspek Kognitif</h3>
+                <p>Memahami bagaimana manusia memproses informasi, mengingat, dan membuat keputusan. Hal ini mencakup working memory, attention, dan mental models.</p>
+                
+                <h3>2. Aspek Fisik dan Ergonomi</h3>
+                <p>Mempertimbangkan kemampuan fisik pengguna dalam merancang interface. Ini meliputi ukuran target, jangkauan tangan, dan postur tubuh yang nyaman.</p>
+                
+                <h3>3. Aspek Emosional</h3>
+                <p>Interface harus mempertimbangkan respons emosional pengguna. Desain yang estetis dan pleasant dapat meningkatkan kepuasan dan produktivitas pengguna.</p>
+                
+                <h3>4. Perbedaan Individual</h3>
+                <p>Menyadari bahwa pengguna memiliki latar belakang, kemampuan, dan preferensi yang berbeda. Interface harus dapat mengakomodasi diversity ini melalui personalisasi dan accessibility.</p>
+                
+                <h3>5. Konteks Penggunaan</h3>
+                <p>Mempertimbangkan lingkungan, situasi, dan tujuan penggunaan sistem. Interface mobile berbeda dengan desktop, begitu pula interface untuk situasi darurat berbeda dengan penggunaan sehari-hari.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showContent(contentId) {
+            // Hide main navigation
+            document.getElementById('main-navigation').style.display = 'none';
+            
+            // Hide all content sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected content
+            document.getElementById(contentId).classList.add('active');
+            
+            // Hide video section when showing content
+            document.getElementById('video-section').style.display = 'none';
+        }
+
+        function showMain() {
+            // Show main navigation
+            document.getElementById('main-navigation').style.display = 'grid';
+            
+            // Hide all content sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show video section
+            document.getElementById('video-section').style.display = 'block';
+        }
+
+        function playVideo(videoType) {
+            const videoTitles = {
+                'intro': 'Pengantar Human-Computer Interaction',
+                'design': 'Prinsip Desain Interface yang Efektif',
+                'usability': 'Metode Pengujian Usability',
+                'future': 'Masa Depan Teknologi HCI'
+            };
+            
+            alert(`🎬 Memutar video: "${videoTitles[videoType]}"\n\nDalam implementasi nyata, ini akan membuka video pembelajaran yang sesuai.`);
+        }
+
+        // Add smooth scrolling and initial animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.nav-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.style.animation = 'fadeIn 0.6s ease-out forwards';
+            });
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                showMain();
+            }
+        });
+    </script>
+</body>
+</html>
